@@ -1,26 +1,43 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import fakeData from "./fakeData";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+            {fakeData.columns.map(column => {
+                const {title, data} = column;
+                return <div>
+                    <div>{title}</div>
+                    <div>{data.map((item) => {
+                        if (item.type === 'table') {
+                            const {children} = item;
+                            return (
+                                <table>
+                                    {children.map(({value, name}) => {
+                                        return <tr>
+                                            <td>{value}</td>
+                                            <td>{name}</td>
+                                        </tr>
+                                    })}
+                                </table>
+                            )
+                        }
+
+                        if (item.type === 'expander') {
+                            const {children, value, name} = item;
+
+                            return <div>
+                                <div>{name}</div>
+                                <div>{value}</div>
+
+                            </div>
+                        }
+
+                    })}</div>
+                </div>
+            })}
+        </div>
+    );
 }
 
 export default App;
